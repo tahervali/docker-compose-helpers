@@ -1,0 +1,32 @@
+version: '3'
+services:
+  database:
+    image: "postgres" # use latest official postgres version
+    ports:
+      - "5432:5432"
+    env_file:
+      - database.env # configure postgres
+    networks:
+      - taher_network
+    volumes:
+      - database-data:/var/lib/postgresql/data2
+  pgadmin:
+    image: "dpage/pgadmin4"
+    ports:
+      - "8889:80"
+    env_file:
+      - pgadmin.env
+    networks:
+      - taher_network
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    links:
+      - database:psql-server
+
+networks:
+  taher_network:
+    driver: bridge
+    
+volumes:
+  database-data:
+  pgadmin-data:
